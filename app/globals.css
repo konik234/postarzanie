@@ -51,33 +51,15 @@ body::after {
   padding: 3rem 1.5rem 0;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1rem;
-  border-radius: 100px;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #818cf8;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 1.2rem;
+.logo {
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.25));
+  animation: logo-float 4s ease-in-out infinite;
 }
 
-.badge-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 h1 {
@@ -90,12 +72,14 @@ h1 {
   line-height: 1.1;
 }
 
-.subtitle {
+.tagline {
   color: #6b7280;
   margin-top: 0.8rem;
   margin-bottom: 2.5rem;
   font-size: 1rem;
   font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
 /* Container */

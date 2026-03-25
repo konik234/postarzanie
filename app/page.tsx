@@ -122,12 +122,46 @@ export default function Home() {
   return (
     <>
       <div className="header">
-        <div className="badge">
-          <span className="badge-dot" />
-          Powered by OpenAI
-        </div>
+        <svg className="logo" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#818cf8" />
+              <stop offset="50%" stopColor="#a855f7" />
+              <stop offset="100%" stopColor="#6366f1" />
+            </linearGradient>
+            <linearGradient id="faceGrad" x1="20" y1="16" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#c7d2fe" />
+              <stop offset="100%" stopColor="#a5b4fc" />
+            </linearGradient>
+          </defs>
+          {/* Outer clock ring */}
+          <circle cx="36" cy="36" r="33" stroke="url(#logoGrad)" strokeWidth="2.5" opacity="0.3" />
+          <circle cx="36" cy="36" r="33" stroke="url(#logoGrad)" strokeWidth="2.5" strokeDasharray="52 156" strokeLinecap="round" />
+          {/* Clock ticks */}
+          <line x1="36" y1="5" x2="36" y2="9" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="36" y1="63" x2="36" y2="67" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="5" y1="36" x2="9" y2="36" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="63" y1="36" x2="67" y2="36" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
+          {/* Stylized face silhouette */}
+          <ellipse cx="36" cy="32" rx="12" ry="14" stroke="url(#faceGrad)" strokeWidth="2" fill="none" />
+          {/* Eyes */}
+          <circle cx="31" cy="30" r="1.5" fill="url(#faceGrad)" />
+          <circle cx="41" cy="30" r="1.5" fill="url(#faceGrad)" />
+          {/* Subtle smile */}
+          <path d="M32 36 Q36 39 40 36" stroke="url(#faceGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+          {/* Clock hand - hour */}
+          <line x1="36" y1="36" x2="36" y2="22" stroke="url(#logoGrad)" strokeWidth="2.5" strokeLinecap="round" />
+          {/* Clock hand - minute */}
+          <line x1="36" y1="36" x2="46" y2="30" stroke="url(#logoGrad)" strokeWidth="1.8" strokeLinecap="round" />
+          {/* Center dot */}
+          <circle cx="36" cy="36" r="2" fill="url(#logoGrad)" />
+          {/* AI sparkle accents */}
+          <path d="M56 14 L57.5 18 L59 14 L57.5 10 Z" fill="url(#logoGrad)" opacity="0.7" />
+          <path d="M14 52 L15 54.5 L16 52 L15 49.5 Z" fill="url(#logoGrad)" opacity="0.5" />
+          <circle cx="58" cy="54" r="1.5" fill="url(#logoGrad)" opacity="0.4" />
+        </svg>
         <h1>Face Aging AI</h1>
-        <p className="subtitle">Postarzanie twarzy z wykorzystaniem GPT Image API</p>
+        <p className="tagline">Transform your appearance through time</p>
       </div>
 
       <div className="container">
