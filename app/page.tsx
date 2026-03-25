@@ -3,9 +3,9 @@
 import { useState, useRef, useEffect, useCallback, DragEvent, ChangeEvent } from 'react';
 
 const STAGES = [
-  { threshold: 0, label: 'Analizuje twarz...' },
-  { threshold: 30, label: 'Nakladam efekt starzenia...' },
-  { threshold: 70, label: 'Finalizuje obraz...' },
+  { threshold: 0, label: 'analyzing_face...' },
+  { threshold: 30, label: 'applying_aging_effect...' },
+  { threshold: 70, label: 'finalizing_output...' },
 ];
 
 function getStageLabel(percent: number): string {
@@ -97,7 +97,7 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || `Blad serwera: ${res.status}`);
+        throw new Error(data.error || `server_error: ${res.status}`);
       }
 
       stopProgress();
@@ -111,7 +111,7 @@ export default function Home() {
     } catch (err) {
       stopProgress();
       setProgress(0);
-      showError(err instanceof Error ? err.message : 'Nieznany blad');
+      showError(err instanceof Error ? err.message : 'unknown_error');
     } finally {
       setLoading(false);
     }
@@ -121,131 +121,144 @@ export default function Home() {
 
   return (
     <>
-      <div className="header">
-        <svg className="logo" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="logoGrad" x1="0" y1="0" x2="72" y2="72" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#818cf8" />
-              <stop offset="50%" stopColor="#a855f7" />
-              <stop offset="100%" stopColor="#6366f1" />
-            </linearGradient>
-            <linearGradient id="faceGrad" x1="20" y1="16" x2="52" y2="56" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#c7d2fe" />
-              <stop offset="100%" stopColor="#a5b4fc" />
-            </linearGradient>
-          </defs>
-          {/* Outer clock ring */}
-          <circle cx="36" cy="36" r="33" stroke="url(#logoGrad)" strokeWidth="2.5" opacity="0.3" />
-          <circle cx="36" cy="36" r="33" stroke="url(#logoGrad)" strokeWidth="2.5" strokeDasharray="52 156" strokeLinecap="round" />
-          {/* Clock ticks */}
-          <line x1="36" y1="5" x2="36" y2="9" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="36" y1="63" x2="36" y2="67" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="5" y1="36" x2="9" y2="36" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="63" y1="36" x2="67" y2="36" stroke="url(#logoGrad)" strokeWidth="2" strokeLinecap="round" />
-          {/* Stylized face silhouette */}
-          <ellipse cx="36" cy="32" rx="12" ry="14" stroke="url(#faceGrad)" strokeWidth="2" fill="none" />
-          {/* Eyes */}
-          <circle cx="31" cy="30" r="1.5" fill="url(#faceGrad)" />
-          <circle cx="41" cy="30" r="1.5" fill="url(#faceGrad)" />
-          {/* Subtle smile */}
-          <path d="M32 36 Q36 39 40 36" stroke="url(#faceGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-          {/* Clock hand - hour */}
-          <line x1="36" y1="36" x2="36" y2="22" stroke="url(#logoGrad)" strokeWidth="2.5" strokeLinecap="round" />
-          {/* Clock hand - minute */}
-          <line x1="36" y1="36" x2="46" y2="30" stroke="url(#logoGrad)" strokeWidth="1.8" strokeLinecap="round" />
-          {/* Center dot */}
-          <circle cx="36" cy="36" r="2" fill="url(#logoGrad)" />
-          {/* AI sparkle accents */}
-          <path d="M56 14 L57.5 18 L59 14 L57.5 10 Z" fill="url(#logoGrad)" opacity="0.7" />
-          <path d="M14 52 L15 54.5 L16 52 L15 49.5 Z" fill="url(#logoGrad)" opacity="0.5" />
-          <circle cx="58" cy="54" r="1.5" fill="url(#logoGrad)" opacity="0.4" />
-        </svg>
-        <h1>Face Aging AI</h1>
-        <p className="tagline">Transform your appearance through time</p>
-      </div>
-
-      <div className="container">
-        <div
-          className={`drop-zone${file ? ' has-file' : ''}${dragOver ? ' drag-over' : ''}`}
-          onClick={() => fileInputRef.current?.click()}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={onDrop}
-        >
-          <div className="drop-zone-icon">&#128247;</div>
-          <p>Przeciagnij zdjecie tutaj lub kliknij, aby wybrac</p>
-          <p className="hint">JPG, PNG, WebP &bull; maks. 20 MB</p>
-          {fileName && <p className="file-name">{fileName}</p>}
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="nav-brand">
+          <svg className="nav-logo" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="1" y="1" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="7.5" cy="8.5" r="1" fill="currentColor" />
+            <circle cx="12.5" cy="8.5" r="1" fill="currentColor" />
+            <path d="M7 13 Q10 15.5 13 13" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            <line x1="14" y1="4" x2="18" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+          </svg>
+          <span className="nav-title">Face Aging AI</span>
         </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          hidden
-          onChange={onFileChange}
-        />
+        <ul className="nav-links">
+          <li><a href="#">upload</a></li>
+          <li><a href="#">process</a></li>
+          <li><a href="#">export</a></li>
+        </ul>
+        <div className="nav-status">
+          <span className="status-dot" />
+          system_online
+        </div>
+      </nav>
 
-        <div className="slider-section">
-          <div className="slider-header">
-            <label>O ile lat postarzec?</label>
-            <span className="age-value">+{age} lat</span>
+      {/* Main content */}
+      <main className="main">
+        <div className="section-header">
+          <h1><span className="prompt">&gt;</span> Face Aging Terminal</h1>
+          <p className="tagline">Transform your appearance through time<span className="cursor" /></p>
+        </div>
+
+        {/* Upload card */}
+        <div className="card">
+          <div className="card-header">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1v8M3.5 5.5L7 1l3.5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1.5 10v1.5a1 1 0 001 1h9a1 1 0 001-1V10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+            </svg>
+            input_source
           </div>
-          <input
-            type="range"
-            min={1}
-            max={50}
-            value={age}
-            onChange={(e) => setAge(Number(e.target.value))}
-          />
+          <div className="card-body">
+            <div
+              className={`drop-zone${file ? ' has-file' : ''}${dragOver ? ' drag-over' : ''}`}
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={onDrop}
+            >
+              <div className="drop-zone-icon">&#9633;</div>
+              <p>drop_file_here || click_to_select</p>
+              <p className="hint">formats: jpg, png, webp // max: 20mb</p>
+              {fileName && <p className="file-name">&gt; {fileName}</p>}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+              onChange={onFileChange}
+            />
+          </div>
         </div>
 
+        {/* Config card */}
+        <div className="card">
+          <div className="card-header">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3" />
+              <path d="M7 4v3l2 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            age_config
+          </div>
+          <div className="card-body">
+            <div className="slider-row">
+              <label>years_offset:</label>
+              <input
+                type="range"
+                min={1}
+                max={50}
+                value={age}
+                onChange={(e) => setAge(Number(e.target.value))}
+              />
+              <span className="age-value">+{age}y</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Execute button */}
         <button
           className="btn"
           disabled={!file || loading}
           onClick={process}
         >
-          <span>{loading ? 'Przetwarzanie...' : 'Postarzej twarz'}</span>
+          {loading ? '[ processing... ]' : '[ execute_aging ]'}
         </button>
 
         {error && <div className="error-msg">{error}</div>}
 
+        {/* Results */}
         {originalSrc && (
-          <div className="results">
-            <div className="result-card">
-              <h3>Oryginal</h3>
-              <div className="img-wrap">
-                <img src={originalSrc} alt="Oryginalne zdjecie" />
+          <div className="results-section">
+            <div className="results">
+              <div className="result-card">
+                <h3><span className="tag">[src]</span> original_input</h3>
+                <div className="img-wrap">
+                  <img src={originalSrc} alt="Original" />
+                </div>
               </div>
-            </div>
-            <div className="result-card">
-              <h3>Postarzone</h3>
-              <div className="img-wrap">
-                {loading && (
-                  <div className="progress-overlay">
-                    <div className="progress-spinner" />
-                    <div className="progress-bar-container">
-                      <div className="progress-bar-track">
-                        <div
-                          className="progress-bar-fill"
-                          style={{ width: `${roundedProgress}%` }}
-                        />
+              <div className="result-card">
+                <h3><span className="tag">[out]</span> processed_output</h3>
+                <div className="img-wrap">
+                  {loading && (
+                    <div className="progress-overlay">
+                      <div className="progress-spinner" />
+                      <div className="progress-bar-container">
+                        <div className="progress-bar-track">
+                          <div
+                            className="progress-bar-fill"
+                            style={{ width: `${roundedProgress}%` }}
+                          />
+                        </div>
+                        <div className="progress-stage">{getStageLabel(roundedProgress)}</div>
+                        <div className="progress-percent">{roundedProgress}%</div>
                       </div>
-                      <div className="progress-stage">{getStageLabel(roundedProgress)}</div>
-                      <div className="progress-percent">{roundedProgress}%</div>
                     </div>
-                  </div>
+                  )}
+                  {resultSrc && <img src={resultSrc} alt="Aged result" />}
+                </div>
+                {resultSrc && (
+                  <a className="download-btn" href={resultSrc} download="aged_face.png">
+                    &gt; save_output
+                  </a>
                 )}
-                {resultSrc && <img src={resultSrc} alt="Postarzone zdjecie" />}
               </div>
-              {resultSrc && (
-                <a className="download-btn" href={resultSrc} download="aged_face.png">
-                  Pobierz wynik
-                </a>
-              )}
             </div>
           </div>
         )}
-      </div>
+      </main>
     </>
   );
 }
