@@ -133,7 +133,7 @@ export default function Home() {
         <div className="w-full max-w-[900px]">
           {/* Hero */}
           <div className="text-center mb-14">
-            <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#c7d2fe] via-[#a5b4fc] to-[#c084fc] bg-clip-text text-transparent">
+            <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#c7d2fe] via-[#a5b4fc] to-[#c084fc] bg-clip-text text-transparent leading-tight pb-1">
               Face Aging
             </h1>
             <p className="text-lg text-[#9ca3af] max-w-md mx-auto leading-relaxed">
@@ -141,7 +141,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             {/* Upload */}
             <Card>
               <CardHeader>
@@ -196,7 +196,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-5">
-                  <label className="text-base text-[#d1d5db] shrink-0 font-medium">How many years?</label>
+                  <label className="text-base text-[#d1d5db] shrink-0 font-medium">O ile lat postarzec?</label>
                   <Slider
                     min={1}
                     max={50}
@@ -204,7 +204,7 @@ export default function Home() {
                     onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
                   />
                   <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[70px] text-right">
-                    +{age} yrs
+                    +{age} lat
                   </span>
                 </div>
               </CardContent>
@@ -219,38 +219,38 @@ export default function Home() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Processing...
+                  Przetwarzanie...
                 </>
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  Generate aged face
+                  Postarzej twarz
                 </>
               )}
             </Button>
 
             {/* Features */}
-            <div className="grid grid-cols-3 gap-4 mt-2">
-              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
-                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
-                  <Zap className="w-5 h-5 text-[#818cf8]" />
+            <div className="grid grid-cols-3 gap-5">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+                <div className="rounded-xl bg-[#6366f1]/15 p-3">
+                  <Zap className="w-6 h-6 text-[#818cf8]" />
                 </div>
-                <p className="text-sm font-medium text-[#d1d5db]">AI-Powered</p>
-                <p className="text-xs text-[#6b7280] leading-relaxed">GPT Image model for realistic results</p>
+                <p className="text-base font-semibold text-[#e2e8f0]">AI-Powered</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Model GPT Image do realistycznych wynikow</p>
               </div>
-              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
-                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
-                  <Shield className="w-5 h-5 text-[#818cf8]" />
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+                <div className="rounded-xl bg-[#6366f1]/15 p-3">
+                  <Shield className="w-6 h-6 text-[#818cf8]" />
                 </div>
-                <p className="text-sm font-medium text-[#d1d5db]">Secure</p>
-                <p className="text-xs text-[#6b7280] leading-relaxed">Photos processed securely on server</p>
+                <p className="text-base font-semibold text-[#e2e8f0]">Bezpieczenstwo</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Zdjecia przetwarzane bezpiecznie na serwerze</p>
               </div>
-              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
-                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
-                  <Image className="w-5 h-5 text-[#818cf8]" />
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+                <div className="rounded-xl bg-[#6366f1]/15 p-3">
+                  <Image className="w-6 h-6 text-[#818cf8]" />
                 </div>
-                <p className="text-sm font-medium text-[#d1d5db]">High Quality</p>
-                <p className="text-xs text-[#6b7280] leading-relaxed">1024x1024 output resolution</p>
+                <p className="text-base font-semibold text-[#e2e8f0]">Wysoka jakosc</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Rozdzielczosc wyjsciowa 1024x1024</p>
               </div>
             </div>
 
@@ -263,7 +263,7 @@ export default function Home() {
 
             {/* Results */}
             {originalSrc && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-2">
                 <Card>
                   <CardHeader>
                     <CardTitle>Original</CardTitle>
@@ -317,7 +317,7 @@ export default function Home() {
                           className="w-full rounded-xl object-contain max-h-[450px]"
                         />
                       ) : !loading ? (
-                        <p className="text-base text-[#6b7280]">Output will appear here</p>
+                        <p className="text-base text-[#6b7280]">Wynik pojawi sie tutaj</p>
                       ) : null}
                     </div>
                   </CardContent>
