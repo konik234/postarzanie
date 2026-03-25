@@ -1,11 +1,15 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, DragEvent, ChangeEvent } from 'react';
+import { useState, useRef, useEffect, useCallback, type DragEvent, type ChangeEvent } from 'react';
+import { Upload, Clock, Sparkles, Download, Loader2 } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
+import { Slider } from '@/app/components/ui/slider';
 
 const STAGES = [
-  { threshold: 0, label: 'analyzing_face...' },
-  { threshold: 30, label: 'applying_aging_effect...' },
-  { threshold: 70, label: 'finalizing_output...' },
+  { threshold: 0, label: 'Analyzing face structure...' },
+  { threshold: 30, label: 'Applying aging transformation...' },
+  { threshold: 70, label: 'Finalizing output...' },
 ];
 
 function getStageLabel(percent: number): string {
@@ -42,8 +46,7 @@ export default function Home() {
     const duration = 15000;
     progressRef.current = setInterval(() => {
       const elapsed = Date.now() - start;
-      const raw = (elapsed / duration) * 90;
-      const p = Math.min(raw, 92);
+      const p = Math.min((elapsed / duration) * 90, 92);
       setProgress(p);
       if (p >= 92) stopProgress();
     }, 100);
@@ -78,7 +81,6 @@ export default function Home() {
 
   async function process() {
     if (!file) return;
-
     setLoading(true);
     setResultSrc('');
     setError('');
@@ -89,176 +91,213 @@ export default function Home() {
       formData.append('image', file);
       formData.append('years', String(age));
 
-      const res = await fetch('/api/age-face', {
-        method: 'POST',
-        body: formData,
-      });
-
+      const res = await fetch('/api/age-face', { method: 'POST', body: formData });
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || `server_error: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(data.error || `Error: ${res.status}`);
 
       stopProgress();
       setProgress(100);
 
-      if (data.b64) {
-        setResultSrc(`data:image/png;base64,${data.b64}`);
-      } else if (data.url) {
-        setResultSrc(data.url);
-      }
+      if (data.b64) setResultSrc(`data:image/png;base64,${data.b64}`);
+      else if (data.url) setResultSrc(data.url);
     } catch (err) {
       stopProgress();
       setProgress(0);
-      showError(err instanceof Error ? err.message : 'unknown_error');
+      showError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
   }
 
-  const roundedProgress = Math.round(progress);
+  const pct = Math.round(progress);
 
   return (
-    <>
+    <div className="min-h-screen">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="nav-brand">
-          <svg className="nav-logo" width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <rect x="1" y="1" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.5" />
-            <circle cx="7.5" cy="8.5" r="1" fill="currentColor" />
-            <circle cx="12.5" cy="8.5" r="1" fill="currentColor" />
-            <path d="M7 13 Q10 15.5 13 13" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            <line x1="14" y1="4" x2="18" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-          </svg>
-          <span className="nav-title">Face Aging AI</span>
+      <nav className="sticky top-0 z-50 flex items-center justify-between h-14 px-6 border-b border-border bg-[oklch(0.09_0.01_260)]/80 backdrop-blur-md">
+        <div className="flex items-center gap-2.5">
+          <Sparkles className="w-4 h-4 text-accent" />
+          <span className="text-sm font-semibold tracking-tight">Face Aging AI</span>
         </div>
-        <ul className="nav-links">
-          <li><a href="#">upload</a></li>
-          <li><a href="#">process</a></li>
-          <li><a href="#">export</a></li>
-        </ul>
-        <div className="nav-status">
-          <span className="status-dot" />
-          system_online
+        <div className="flex items-center gap-1.5 text-xs text-muted">
+          <span className="w-1.5 h-1.5 rounded-full bg-success" />
+          Ready
         </div>
       </nav>
 
-      {/* Main content */}
-      <main className="main">
-        <div className="section-header">
-          <h1><span className="prompt">&gt;</span> Face Aging Terminal</h1>
-          <p className="tagline">Transform your appearance through time<span className="cursor" /></p>
+      {/* Content */}
+      <main className="max-w-[880px] mx-auto px-5 pt-10 pb-16">
+        {/* Hero */}
+        <div className="mb-10">
+          <h1 className="text-2xl font-semibold tracking-tight mb-1.5">
+            Face Aging
+          </h1>
+          <p className="text-sm text-muted">
+            Transform your appearance through time using AI-powered aging simulation.
+          </p>
         </div>
 
-        {/* Upload card */}
-        <div className="card">
-          <div className="card-header">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1v8M3.5 5.5L7 1l3.5 4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M1.5 10v1.5a1 1 0 001 1h9a1 1 0 001-1V10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-            </svg>
-            input_source
-          </div>
-          <div className="card-body">
-            <div
-              className={`drop-zone${file ? ' has-file' : ''}${dragOver ? ' drag-over' : ''}`}
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={onDrop}
-            >
-              <div className="drop-zone-icon">&#9633;</div>
-              <p>drop_file_here || click_to_select</p>
-              <p className="hint">formats: jpg, png, webp // max: 20mb</p>
-              {fileName && <p className="file-name">&gt; {fileName}</p>}
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              hidden
-              onChange={onFileChange}
-            />
-          </div>
-        </div>
-
-        {/* Config card */}
-        <div className="card">
-          <div className="card-header">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.3" />
-              <path d="M7 4v3l2 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            age_config
-          </div>
-          <div className="card-body">
-            <div className="slider-row">
-              <label>years_offset:</label>
+        <div className="grid gap-4">
+          {/* Upload */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="w-3.5 h-3.5 text-accent" />
+                Upload
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div
+                className={`
+                  relative flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-10 cursor-pointer transition-all
+                  ${file
+                    ? 'border-success/40 bg-success/[0.02]'
+                    : dragOver
+                      ? 'border-accent/40 bg-accent/[0.02]'
+                      : 'border-border hover:border-border-hover hover:bg-surface-hover'
+                  }
+                `}
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={onDrop}
+              >
+                <div className={`rounded-full p-3 ${file ? 'bg-success/10' : 'bg-surface-hover'}`}>
+                  <Upload className={`w-5 h-5 ${file ? 'text-success' : 'text-muted'}`} />
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-[oklch(0.75_0.01_260)]">
+                    {file ? fileName : 'Drop your image here or click to browse'}
+                  </p>
+                  <p className="text-xs text-muted mt-1">JPG, PNG, WebP up to 20MB</p>
+                </div>
+              </div>
               <input
-                type="range"
-                min={1}
-                max={50}
-                value={age}
-                onChange={(e) => setAge(Number(e.target.value))}
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+                onChange={onFileChange}
               />
-              <span className="age-value">+{age}y</span>
-            </div>
-          </div>
-        </div>
+            </CardContent>
+          </Card>
 
-        {/* Execute button */}
-        <button
-          className="btn"
-          disabled={!file || loading}
-          onClick={process}
-        >
-          {loading ? '[ processing... ]' : '[ execute_aging ]'}
-        </button>
-
-        {error && <div className="error-msg">{error}</div>}
-
-        {/* Results */}
-        {originalSrc && (
-          <div className="results-section">
-            <div className="results">
-              <div className="result-card">
-                <h3><span className="tag">[src]</span> original_input</h3>
-                <div className="img-wrap">
-                  <img src={originalSrc} alt="Original" />
-                </div>
+          {/* Age Config */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5 text-accent" />
+                Configuration
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4">
+                <label className="text-sm text-[oklch(0.65_0.01_260)] shrink-0">Age offset</label>
+                <Slider
+                  min={1}
+                  max={50}
+                  value={age}
+                  onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
+                />
+                <span className="text-sm font-semibold text-accent tabular-nums min-w-[52px] text-right">
+                  +{age} yrs
+                </span>
               </div>
-              <div className="result-card">
-                <h3><span className="tag">[out]</span> processed_output</h3>
-                <div className="img-wrap">
-                  {loading && (
-                    <div className="progress-overlay">
-                      <div className="progress-spinner" />
-                      <div className="progress-bar-container">
-                        <div className="progress-bar-track">
-                          <div
-                            className="progress-bar-fill"
-                            style={{ width: `${roundedProgress}%` }}
-                          />
-                        </div>
-                        <div className="progress-stage">{getStageLabel(roundedProgress)}</div>
-                        <div className="progress-percent">{roundedProgress}%</div>
-                      </div>
-                    </div>
+            </CardContent>
+          </Card>
+
+          {/* Execute */}
+          <Button
+            size="full"
+            disabled={!file || loading}
+            onClick={process}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                Generate aged face
+              </>
+            )}
+          </Button>
+
+          {/* Error */}
+          {error && (
+            <div className="rounded-lg border border-error/20 bg-error/[0.05] px-4 py-3 text-sm text-error">
+              {error}
+            </div>
+          )}
+
+          {/* Results */}
+          {originalSrc && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Original</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <img
+                    src={originalSrc}
+                    alt="Original"
+                    className="w-full rounded-lg object-contain max-h-[420px]"
+                  />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Result</CardTitle>
+                  {resultSrc && (
+                    <a
+                      href={resultSrc}
+                      download="aged_face.png"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 transition-colors -mt-1"
+                    >
+                      <Download className="w-3 h-3" />
+                      Save
+                    </a>
                   )}
-                  {resultSrc && <img src={resultSrc} alt="Aged result" />}
-                </div>
-                {resultSrc && (
-                  <a className="download-btn" href={resultSrc} download="aged_face.png">
-                    &gt; save_output
-                  </a>
-                )}
-              </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative min-h-[200px] flex items-center justify-center">
+                    {loading && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-surface/90 rounded-lg z-10">
+                        <Loader2 className="w-8 h-8 text-accent animate-spin" />
+                        <div className="w-full max-w-[200px] flex flex-col gap-2">
+                          <div className="h-1 w-full rounded-full bg-border overflow-hidden">
+                            <div
+                              className="h-full bg-accent rounded-full transition-[width] duration-300 relative"
+                              style={{ width: `${pct}%` }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_1.5s_ease-in-out_infinite]" />
+                            </div>
+                          </div>
+                          <p className="text-xs text-accent text-center">{getStageLabel(pct)}</p>
+                          <p className="text-xs text-muted text-center tabular-nums">{pct}%</p>
+                        </div>
+                      </div>
+                    )}
+                    {resultSrc ? (
+                      <img
+                        src={resultSrc}
+                        alt="Aged result"
+                        className="w-full rounded-lg object-contain max-h-[420px]"
+                      />
+                    ) : !loading ? (
+                      <p className="text-xs text-muted">Output will appear here</p>
+                    ) : null}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
-    </>
+    </div>
   );
 }
