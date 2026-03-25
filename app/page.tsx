@@ -7,9 +7,9 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/ca
 import { Slider } from '@/app/components/ui/slider';
 
 const STAGES = [
-  { threshold: 0, label: 'Analyzing face structure...' },
-  { threshold: 30, label: 'Applying aging transformation...' },
-  { threshold: 70, label: 'Finalizing output...' },
+  { threshold: 0, label: 'Analizuję twarz...' },
+  { threshold: 30, label: 'Nakładam efekt starzenia...' },
+  { threshold: 70, label: 'Finalizuję obraz...' },
 ];
 
 function getStageLabel(percent: number): string {
@@ -130,10 +130,10 @@ export default function Home() {
 
       {/* Content */}
       <main className="flex-1 flex flex-col items-center w-full px-6 pt-14 pb-20">
-        <div className="w-full max-w-[900px]">
+        <div className="w-full max-w-3xl">
           {/* Hero */}
           <div className="text-center mb-14">
-            <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#c7d2fe] via-[#a5b4fc] to-[#c084fc] bg-clip-text text-transparent leading-tight pb-1">
+            <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#818cf8] via-[#a78bfa] to-[#c084fc] bg-clip-text text-transparent leading-tight pb-2">
               Face Aging
             </h1>
             <p className="text-lg text-[#9ca3af] max-w-md mx-auto leading-relaxed">
@@ -153,7 +153,7 @@ export default function Home() {
               <CardContent>
                 <div
                   className={`
-                    relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed p-16 cursor-pointer transition-all duration-300
+                    relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed min-h-48 p-16 cursor-pointer transition-all duration-300
                     ${file
                       ? 'border-[#4ade80]/40 bg-[#4ade80]/[0.03]'
                       : dragOver
@@ -196,7 +196,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-5">
-                  <label className="text-base text-[#d1d5db] shrink-0 font-medium">O ile lat postarzec?</label>
+                  <label className="text-base text-[#d1d5db] shrink-0 font-medium">O ile lat postarzeć?</label>
                   <Slider
                     min={1}
                     max={50}
@@ -231,26 +231,26 @@ export default function Home() {
 
             {/* Features */}
             <div className="grid grid-cols-3 gap-5">
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Zap className="w-6 h-6 text-[#818cf8]" />
                 </div>
                 <p className="text-base font-semibold text-[#e2e8f0]">AI-Powered</p>
-                <p className="text-sm text-[#9ca3af] leading-relaxed">Model GPT Image do realistycznych wynikow</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Model GPT Image do realistycznych wyników</p>
               </div>
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Shield className="w-6 h-6 text-[#818cf8]" />
                 </div>
-                <p className="text-base font-semibold text-[#e2e8f0]">Bezpieczenstwo</p>
-                <p className="text-sm text-[#9ca3af] leading-relaxed">Zdjecia przetwarzane bezpiecznie na serwerze</p>
+                <p className="text-base font-semibold text-[#e2e8f0]">Bezpieczeństwo</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Zdjęcia przetwarzane bezpiecznie na serwerze</p>
               </div>
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1a1a2e] border border-[rgba(99,102,241,0.15)] p-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.08)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Image className="w-6 h-6 text-[#818cf8]" />
                 </div>
-                <p className="text-base font-semibold text-[#e2e8f0]">Wysoka jakosc</p>
-                <p className="text-sm text-[#9ca3af] leading-relaxed">Rozdzielczosc wyjsciowa 1024x1024</p>
+                <p className="text-base font-semibold text-[#e2e8f0]">Wysoka jakość</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed">Rozdzielczość wyjściowa 1024x1024</p>
               </div>
             </div>
 
@@ -317,7 +317,7 @@ export default function Home() {
                           className="w-full rounded-xl object-contain max-h-[450px]"
                         />
                       ) : !loading ? (
-                        <p className="text-base text-[#6b7280]">Wynik pojawi sie tutaj</p>
+                        <p className="text-base text-[#6b7280]">Wynik pojawi się tutaj</p>
                       ) : null}
                     </div>
                   </CardContent>
