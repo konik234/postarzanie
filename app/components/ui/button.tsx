@@ -3,19 +3,19 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/app/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2.5 rounded-2xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-35 cursor-pointer',
+  'inline-flex items-center justify-center gap-2.5 rounded-2xl font-semibold transition-all duration-300 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-30 cursor-pointer',
   {
     variants: {
       variant: {
-        default: 'bg-accent text-accent-foreground hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20 hover:-translate-y-0.5 active:translate-y-0',
-        outline: 'border-2 border-border bg-transparent hover:bg-surface-hover hover:border-border-hover',
-        ghost: 'hover:bg-surface-hover',
+        default: 'bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a855f7] text-white hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(99,102,241,0.35)]  active:translate-y-0',
+        outline: 'border-2 border-[rgba(99,102,241,0.2)] bg-transparent hover:bg-[#1f1f35] hover:border-[rgba(99,102,241,0.4)]',
+        ghost: 'hover:bg-[#1f1f35]',
       },
       size: {
         default: 'h-11 px-5 py-2.5 text-sm',
         sm: 'h-9 px-4 text-sm',
         lg: 'h-14 px-8 text-lg',
-        full: 'h-14 w-full px-8 text-base',
+        full: 'h-14 w-full px-8 text-[1.05rem]',
       },
     },
     defaultVariants: {

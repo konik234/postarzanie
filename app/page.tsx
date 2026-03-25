@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback, type DragEvent, type ChangeEvent } from 'react';
-import { Upload, Clock, Sparkles, Download, Loader2 } from 'lucide-react';
+import { Upload, Clock, Sparkles, Download, Loader2, Camera, Zap, Shield, Image } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/app/components/ui/card';
 import { Slider } from '@/app/components/ui/slider';
@@ -113,29 +113,31 @@ export default function Home() {
   const pct = Math.round(progress);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="relative z-10 min-h-screen flex flex-col">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between h-16 px-8 border-b border-border bg-[oklch(0.1_0.015_260)]/80 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 flex items-center justify-between h-16 px-8 border-b border-[rgba(99,102,241,0.1)] bg-[#0f0f1a]/80 backdrop-blur-xl">
         <div className="flex items-center gap-3">
-          <Sparkles className="w-5 h-5 text-accent" />
-          <span className="text-base font-bold tracking-tight">Face Aging AI</span>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6366f1] to-[#a855f7] flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-lg font-bold tracking-tight">Face Aging AI</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted">
-          <span className="w-2 h-2 rounded-full bg-success shadow-[0_0_6px_oklch(0.7_0.18_155)]" />
-          Ready
+        <div className="flex items-center gap-2 text-sm text-[#9ca3af]">
+          <span className="w-2 h-2 rounded-full bg-[#4ade80] shadow-[0_0_8px_rgba(74,222,128,0.5)] animate-[float_3s_ease-in-out_infinite]" />
+          Online
         </div>
       </nav>
 
-      {/* Content - centered */}
-      <main className="flex-1 flex flex-col items-center w-full px-6 pt-12 pb-20">
+      {/* Content */}
+      <main className="flex-1 flex flex-col items-center w-full px-6 pt-14 pb-20">
         <div className="w-full max-w-[900px]">
           {/* Hero */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight mb-3">
+          <div className="text-center mb-14">
+            <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#c7d2fe] via-[#a5b4fc] to-[#c084fc] bg-clip-text text-transparent">
               Face Aging
             </h1>
-            <p className="text-lg text-muted">
-              Transform your appearance through time using AI-powered aging simulation.
+            <p className="text-lg text-[#9ca3af] max-w-md mx-auto leading-relaxed">
+              Transform your appearance through time with AI-powered aging simulation
             </p>
           </div>
 
@@ -144,19 +146,19 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2.5">
-                  <Upload className="w-4 h-4 text-accent" />
+                  <Upload className="w-4 h-4 text-[#818cf8]" />
                   Upload photo
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div
                   className={`
-                    relative flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed p-14 cursor-pointer transition-all duration-200
+                    relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed p-16 cursor-pointer transition-all duration-300
                     ${file
-                      ? 'border-success/40 bg-success/[0.03]'
+                      ? 'border-[#4ade80]/40 bg-[#4ade80]/[0.03]'
                       : dragOver
-                        ? 'border-accent/40 bg-accent/[0.03]'
-                        : 'border-border hover:border-border-hover hover:bg-surface-hover'
+                        ? 'border-[#6366f1]/50 bg-[#6366f1]/[0.04]'
+                        : 'border-[rgba(99,102,241,0.15)] hover:border-[rgba(99,102,241,0.35)] hover:bg-[rgba(99,102,241,0.03)]'
                     }
                   `}
                   onClick={() => fileInputRef.current?.click()}
@@ -164,14 +166,14 @@ export default function Home() {
                   onDragLeave={() => setDragOver(false)}
                   onDrop={onDrop}
                 >
-                  <div className={`rounded-full p-4 ${file ? 'bg-success/10' : 'bg-surface-hover'}`}>
-                    <Upload className={`w-7 h-7 ${file ? 'text-success' : 'text-muted'}`} />
+                  <div className={`rounded-2xl p-5 ${file ? 'bg-[#4ade80]/10' : 'bg-[#1f1f35]'}`}>
+                    <Camera className={`w-10 h-10 ${file ? 'text-[#4ade80]' : 'text-[#6366f1]'}`} />
                   </div>
                   <div className="text-center">
-                    <p className="text-base text-[oklch(0.78_0.01_260)] font-medium">
+                    <p className="text-lg font-medium text-[#d1d5db]">
                       {file ? fileName : 'Drop your image here or click to browse'}
                     </p>
-                    <p className="text-sm text-muted mt-1.5">JPG, PNG, WebP up to 20MB</p>
+                    <p className="text-sm text-[#6b7280] mt-2">JPG, PNG, WebP &bull; max 20 MB</p>
                   </div>
                 </div>
                 <input
@@ -188,20 +190,20 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-accent" />
+                  <Clock className="w-4 h-4 text-[#818cf8]" />
                   Age settings
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-5">
-                  <label className="text-base text-[oklch(0.7_0.01_260)] shrink-0 font-medium">Age offset</label>
+                  <label className="text-base text-[#d1d5db] shrink-0 font-medium">How many years?</label>
                   <Slider
                     min={1}
                     max={50}
                     value={age}
                     onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
                   />
-                  <span className="text-lg font-bold text-accent tabular-nums min-w-[64px] text-right">
+                  <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[70px] text-right">
                     +{age} yrs
                   </span>
                 </div>
@@ -227,9 +229,34 @@ export default function Home() {
               )}
             </Button>
 
+            {/* Features */}
+            <div className="grid grid-cols-3 gap-4 mt-2">
+              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
+                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
+                  <Zap className="w-5 h-5 text-[#818cf8]" />
+                </div>
+                <p className="text-sm font-medium text-[#d1d5db]">AI-Powered</p>
+                <p className="text-xs text-[#6b7280] leading-relaxed">GPT Image model for realistic results</p>
+              </div>
+              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
+                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
+                  <Shield className="w-5 h-5 text-[#818cf8]" />
+                </div>
+                <p className="text-sm font-medium text-[#d1d5db]">Secure</p>
+                <p className="text-xs text-[#6b7280] leading-relaxed">Photos processed securely on server</p>
+              </div>
+              <div className="flex flex-col items-center gap-2.5 rounded-2xl bg-[#1a1a2e]/60 border border-[rgba(99,102,241,0.08)] p-5 text-center">
+                <div className="rounded-xl bg-[#6366f1]/10 p-2.5">
+                  <Image className="w-5 h-5 text-[#818cf8]" />
+                </div>
+                <p className="text-sm font-medium text-[#d1d5db]">High Quality</p>
+                <p className="text-xs text-[#6b7280] leading-relaxed">1024x1024 output resolution</p>
+              </div>
+            </div>
+
             {/* Error */}
             {error && (
-              <div className="rounded-xl border border-error/20 bg-error/[0.06] px-5 py-4 text-base text-error font-medium">
+              <div className="rounded-xl border border-[#f87171]/20 bg-[#f87171]/[0.06] px-5 py-4 text-base text-[#f87171] font-medium">
                 {error}
               </div>
             )}
@@ -257,7 +284,7 @@ export default function Home() {
                       <a
                         href={resultSrc}
                         download="aged_face.png"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-hover transition-colors -mt-1"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-[#818cf8] hover:text-[#a5b4fc] transition-colors -mt-1"
                       >
                         <Download className="w-4 h-4" />
                         Save
@@ -267,19 +294,19 @@ export default function Home() {
                   <CardContent>
                     <div className="relative min-h-[240px] flex items-center justify-center">
                       {loading && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-surface/95 rounded-xl z-10">
-                          <Loader2 className="w-10 h-10 text-accent animate-spin" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#1a1a2e]/95 rounded-xl z-10">
+                          <Loader2 className="w-10 h-10 text-[#818cf8] animate-spin" />
                           <div className="w-full max-w-[240px] flex flex-col gap-3">
-                            <div className="h-1.5 w-full rounded-full bg-border overflow-hidden">
+                            <div className="h-1.5 w-full rounded-full bg-[#0f0f1a] overflow-hidden">
                               <div
-                                className="h-full bg-accent rounded-full transition-[width] duration-300 relative"
+                                className="h-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-full transition-[width] duration-300 relative"
                                 style={{ width: `${pct}%` }}
                               >
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-[shimmer_1.5s_ease-in-out_infinite]" />
                               </div>
                             </div>
-                            <p className="text-sm text-accent text-center font-medium">{getStageLabel(pct)}</p>
-                            <p className="text-sm text-muted text-center tabular-nums">{pct}%</p>
+                            <p className="text-sm text-[#a5b4fc] text-center font-medium">{getStageLabel(pct)}</p>
+                            <p className="text-sm text-[#6b7280] text-center tabular-nums">{pct}%</p>
                           </div>
                         </div>
                       )}
@@ -290,7 +317,7 @@ export default function Home() {
                           className="w-full rounded-xl object-contain max-h-[450px]"
                         />
                       ) : !loading ? (
-                        <p className="text-base text-muted">Output will appear here</p>
+                        <p className="text-base text-[#6b7280]">Output will appear here</p>
                       ) : null}
                     </div>
                   </CardContent>
