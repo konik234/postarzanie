@@ -136,21 +136,21 @@ export default function Home() {
             <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#818cf8] via-[#a78bfa] to-[#c084fc] bg-clip-text text-transparent leading-tight pb-2">
               Face Aging
             </h1>
-            <p className="text-lg text-[#9ca3af] max-w-md mx-auto leading-relaxed">
+            <p className="text-lg text-[#9ca3af] max-w-sm mx-auto leading-relaxed text-center">
               Transform your appearance through time with AI-powered aging simulation
             </p>
           </div>
 
           <div className="flex flex-col gap-8">
             {/* Upload */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2.5">
+            <Card className="p-6">
+              <CardHeader className="px-0 pt-0 pb-4">
+                <CardTitle className="flex items-center gap-2">
                   <Upload className="w-4 h-4 text-[#818cf8]" />
-                  Upload photo
+                  Wgraj zdjęcie
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-0 pb-0">
                 <div
                   className={`
                     relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed min-h-48 p-16 cursor-pointer transition-all duration-300
@@ -187,23 +187,25 @@ export default function Home() {
             </Card>
 
             {/* Age Config */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2.5">
+            <Card className="p-6">
+              <CardHeader className="px-0 pt-0 pb-4">
+                <CardTitle className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[#818cf8]" />
-                  Age settings
+                  Ustawienia wieku
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-0 pb-0">
                 <div className="flex items-center gap-5">
                   <label className="text-base text-[#d1d5db] shrink-0 font-medium">O ile lat postarzeć?</label>
-                  <Slider
-                    min={1}
-                    max={50}
-                    value={age}
-                    onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
-                  />
-                  <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[70px] text-right">
+                  <div className="flex-1 px-2">
+                    <Slider
+                      min={1}
+                      max={50}
+                      value={age}
+                      onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
+                    />
+                  </div>
+                  <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[70px] text-right mr-2">
                     +{age} lat
                   </span>
                 </div>
@@ -264,11 +266,11 @@ export default function Home() {
             {/* Results */}
             {originalSrc && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Original</CardTitle>
+                <Card className="p-6">
+                  <CardHeader className="px-0 pt-0 pb-4">
+                    <CardTitle>Oryginał</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="px-0 pb-0">
                     <img
                       src={originalSrc}
                       alt="Original"
@@ -277,21 +279,21 @@ export default function Home() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>Result</CardTitle>
+                <Card className="p-6">
+                  <CardHeader className="flex flex-row items-center justify-between px-0 pt-0 pb-4">
+                    <CardTitle>Wynik</CardTitle>
                     {resultSrc && (
                       <a
                         href={resultSrc}
                         download="aged_face.png"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-[#818cf8] hover:text-[#a5b4fc] transition-colors -mt-1"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-[#818cf8] hover:text-[#a5b4fc] transition-colors"
                       >
                         <Download className="w-4 h-4" />
-                        Save
+                        Pobierz
                       </a>
                     )}
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="px-0 pb-0">
                     <div className="relative min-h-[240px] flex items-center justify-center">
                       {loading && (
                         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#1a1a2e]/95 rounded-xl z-10">
