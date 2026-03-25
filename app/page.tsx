@@ -113,189 +113,191 @@ export default function Home() {
   const pct = Math.round(progress);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between h-14 px-6 border-b border-border bg-[oklch(0.09_0.01_260)]/80 backdrop-blur-md">
-        <div className="flex items-center gap-2.5">
-          <Sparkles className="w-4 h-4 text-accent" />
-          <span className="text-sm font-semibold tracking-tight">Face Aging AI</span>
+      <nav className="sticky top-0 z-50 flex items-center justify-between h-16 px-8 border-b border-border bg-[oklch(0.1_0.015_260)]/80 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <Sparkles className="w-5 h-5 text-accent" />
+          <span className="text-base font-bold tracking-tight">Face Aging AI</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-muted">
-          <span className="w-1.5 h-1.5 rounded-full bg-success" />
+        <div className="flex items-center gap-2 text-sm text-muted">
+          <span className="w-2 h-2 rounded-full bg-success shadow-[0_0_6px_oklch(0.7_0.18_155)]" />
           Ready
         </div>
       </nav>
 
-      {/* Content */}
-      <main className="max-w-[880px] mx-auto px-5 pt-10 pb-16">
-        {/* Hero */}
-        <div className="mb-10">
-          <h1 className="text-2xl font-semibold tracking-tight mb-1.5">
-            Face Aging
-          </h1>
-          <p className="text-sm text-muted">
-            Transform your appearance through time using AI-powered aging simulation.
-          </p>
-        </div>
+      {/* Content - centered */}
+      <main className="flex-1 flex flex-col items-center w-full px-6 pt-12 pb-20">
+        <div className="w-full max-w-[900px]">
+          {/* Hero */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold tracking-tight mb-3">
+              Face Aging
+            </h1>
+            <p className="text-lg text-muted">
+              Transform your appearance through time using AI-powered aging simulation.
+            </p>
+          </div>
 
-        <div className="grid gap-4">
-          {/* Upload */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Upload className="w-3.5 h-3.5 text-accent" />
-                Upload
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div
-                className={`
-                  relative flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-10 cursor-pointer transition-all
-                  ${file
-                    ? 'border-success/40 bg-success/[0.02]'
-                    : dragOver
-                      ? 'border-accent/40 bg-accent/[0.02]'
-                      : 'border-border hover:border-border-hover hover:bg-surface-hover'
-                  }
-                `}
-                onClick={() => fileInputRef.current?.click()}
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                onDragLeave={() => setDragOver(false)}
-                onDrop={onDrop}
-              >
-                <div className={`rounded-full p-3 ${file ? 'bg-success/10' : 'bg-surface-hover'}`}>
-                  <Upload className={`w-5 h-5 ${file ? 'text-success' : 'text-muted'}`} />
-                </div>
-                <div className="text-center">
-                  <p className="text-sm text-[oklch(0.75_0.01_260)]">
-                    {file ? fileName : 'Drop your image here or click to browse'}
-                  </p>
-                  <p className="text-xs text-muted mt-1">JPG, PNG, WebP up to 20MB</p>
-                </div>
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                hidden
-                onChange={onFileChange}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Age Config */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-accent" />
-                Configuration
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-4">
-                <label className="text-sm text-[oklch(0.65_0.01_260)] shrink-0">Age offset</label>
-                <Slider
-                  min={1}
-                  max={50}
-                  value={age}
-                  onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
-                />
-                <span className="text-sm font-semibold text-accent tabular-nums min-w-[52px] text-right">
-                  +{age} yrs
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Execute */}
-          <Button
-            size="full"
-            disabled={!file || loading}
-            onClick={process}
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" />
-                Generate aged face
-              </>
-            )}
-          </Button>
-
-          {/* Error */}
-          {error && (
-            <div className="rounded-lg border border-error/20 bg-error/[0.05] px-4 py-3 text-sm text-error">
-              {error}
-            </div>
-          )}
-
-          {/* Results */}
-          {originalSrc && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Original</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <img
-                    src={originalSrc}
-                    alt="Original"
-                    className="w-full rounded-lg object-contain max-h-[420px]"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Result</CardTitle>
-                  {resultSrc && (
-                    <a
-                      href={resultSrc}
-                      download="aged_face.png"
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:text-accent/80 transition-colors -mt-1"
-                    >
-                      <Download className="w-3 h-3" />
-                      Save
-                    </a>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  <div className="relative min-h-[200px] flex items-center justify-center">
-                    {loading && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-surface/90 rounded-lg z-10">
-                        <Loader2 className="w-8 h-8 text-accent animate-spin" />
-                        <div className="w-full max-w-[200px] flex flex-col gap-2">
-                          <div className="h-1 w-full rounded-full bg-border overflow-hidden">
-                            <div
-                              className="h-full bg-accent rounded-full transition-[width] duration-300 relative"
-                              style={{ width: `${pct}%` }}
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_1.5s_ease-in-out_infinite]" />
-                            </div>
-                          </div>
-                          <p className="text-xs text-accent text-center">{getStageLabel(pct)}</p>
-                          <p className="text-xs text-muted text-center tabular-nums">{pct}%</p>
-                        </div>
-                      </div>
-                    )}
-                    {resultSrc ? (
-                      <img
-                        src={resultSrc}
-                        alt="Aged result"
-                        className="w-full rounded-lg object-contain max-h-[420px]"
-                      />
-                    ) : !loading ? (
-                      <p className="text-xs text-muted">Output will appear here</p>
-                    ) : null}
+          <div className="flex flex-col gap-6">
+            {/* Upload */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2.5">
+                  <Upload className="w-4 h-4 text-accent" />
+                  Upload photo
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div
+                  className={`
+                    relative flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed p-14 cursor-pointer transition-all duration-200
+                    ${file
+                      ? 'border-success/40 bg-success/[0.03]'
+                      : dragOver
+                        ? 'border-accent/40 bg-accent/[0.03]'
+                        : 'border-border hover:border-border-hover hover:bg-surface-hover'
+                    }
+                  `}
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={onDrop}
+                >
+                  <div className={`rounded-full p-4 ${file ? 'bg-success/10' : 'bg-surface-hover'}`}>
+                    <Upload className={`w-7 h-7 ${file ? 'text-success' : 'text-muted'}`} />
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+                  <div className="text-center">
+                    <p className="text-base text-[oklch(0.78_0.01_260)] font-medium">
+                      {file ? fileName : 'Drop your image here or click to browse'}
+                    </p>
+                    <p className="text-sm text-muted mt-1.5">JPG, PNG, WebP up to 20MB</p>
+                  </div>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  hidden
+                  onChange={onFileChange}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Age Config */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2.5">
+                  <Clock className="w-4 h-4 text-accent" />
+                  Age settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-5">
+                  <label className="text-base text-[oklch(0.7_0.01_260)] shrink-0 font-medium">Age offset</label>
+                  <Slider
+                    min={1}
+                    max={50}
+                    value={age}
+                    onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
+                  />
+                  <span className="text-lg font-bold text-accent tabular-nums min-w-[64px] text-right">
+                    +{age} yrs
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Execute */}
+            <Button
+              size="full"
+              disabled={!file || loading}
+              onClick={process}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5" />
+                  Generate aged face
+                </>
+              )}
+            </Button>
+
+            {/* Error */}
+            {error && (
+              <div className="rounded-xl border border-error/20 bg-error/[0.06] px-5 py-4 text-base text-error font-medium">
+                {error}
+              </div>
+            )}
+
+            {/* Results */}
+            {originalSrc && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Original</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <img
+                      src={originalSrc}
+                      alt="Original"
+                      className="w-full rounded-xl object-contain max-h-[450px]"
+                    />
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle>Result</CardTitle>
+                    {resultSrc && (
+                      <a
+                        href={resultSrc}
+                        download="aged_face.png"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-hover transition-colors -mt-1"
+                      >
+                        <Download className="w-4 h-4" />
+                        Save
+                      </a>
+                    )}
+                  </CardHeader>
+                  <CardContent>
+                    <div className="relative min-h-[240px] flex items-center justify-center">
+                      {loading && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-surface/95 rounded-xl z-10">
+                          <Loader2 className="w-10 h-10 text-accent animate-spin" />
+                          <div className="w-full max-w-[240px] flex flex-col gap-3">
+                            <div className="h-1.5 w-full rounded-full bg-border overflow-hidden">
+                              <div
+                                className="h-full bg-accent rounded-full transition-[width] duration-300 relative"
+                                style={{ width: `${pct}%` }}
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-[shimmer_1.5s_ease-in-out_infinite]" />
+                              </div>
+                            </div>
+                            <p className="text-sm text-accent text-center font-medium">{getStageLabel(pct)}</p>
+                            <p className="text-sm text-muted text-center tabular-nums">{pct}%</p>
+                          </div>
+                        </div>
+                      )}
+                      {resultSrc ? (
+                        <img
+                          src={resultSrc}
+                          alt="Aged result"
+                          className="w-full rounded-xl object-contain max-h-[450px]"
+                        />
+                      ) : !loading ? (
+                        <p className="text-base text-muted">Output will appear here</p>
+                      ) : null}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </div>
