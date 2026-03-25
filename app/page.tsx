@@ -1,6 +1,19 @@
 'use client';
 
-import { useState, useRef, DragEvent, ChangeEvent } from 'react';
+import { useState, useRef, useEffect, useCallback, DragEvent, ChangeEvent } from 'react';
+
+const STAGES = [
+  { threshold: 0, label: 'Analizuje twarz...' },
+  { threshold: 30, label: 'Nakladam efekt starzenia...' },
+  { threshold: 70, label: 'Finalizuje obraz...' },
+];
+
+function getStageLabel(percent: number): string {
+  for (let i = STAGES.length - 1; i >= 0; i--) {
+    if (percent >= STAGES[i].threshold) return STAGES[i].label;
+  }
+  return STAGES[0].label;
+}
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -9,9 +22,34 @@ export default function Home() {
   const [resultSrc, setResultSrc] = useState('');
   const [age, setAge] = useState(20);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopProgress = useCallback(() => {
+    if (progressRef.current) {
+      clearInterval(progressRef.current);
+      progressRef.current = null;
+    }
+  }, []);
+
+  const startProgress = useCallback(() => {
+    setProgress(0);
+    stopProgress();
+    const start = Date.now();
+    const duration = 15000;
+    progressRef.current = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const raw = (elapsed / duration) * 90;
+      const p = Math.min(raw, 92);
+      setProgress(p);
+      if (p >= 92) stopProgress();
+    }, 100);
+  }, [stopProgress]);
+
+  useEffect(() => stopProgress, [stopProgress]);
 
   function handleFile(f: File) {
     setFile(f);
@@ -44,6 +82,7 @@ export default function Home() {
     setLoading(true);
     setResultSrc('');
     setError('');
+    startProgress();
 
     try {
       const formData = new FormData();
@@ -58,8 +97,11 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || `Błąd serwera: ${res.status}`);
+        throw new Error(data.error || `Blad serwera: ${res.status}`);
       }
+
+      stopProgress();
+      setProgress(100);
 
       if (data.b64) {
         setResultSrc(`data:image/png;base64,${data.b64}`);
@@ -67,16 +109,26 @@ export default function Home() {
         setResultSrc(data.url);
       }
     } catch (err) {
-      showError(err instanceof Error ? err.message : 'Nieznany błąd');
+      stopProgress();
+      setProgress(0);
+      showError(err instanceof Error ? err.message : 'Nieznany blad');
     } finally {
       setLoading(false);
     }
   }
 
+  const roundedProgress = Math.round(progress);
+
   return (
     <>
-      <h1>Face Aging AI</h1>
-      <p className="subtitle">Postarzanie twarzy z wykorzystaniem OpenAI GPT Image API</p>
+      <div className="header">
+        <div className="badge">
+          <span className="badge-dot" />
+          Powered by OpenAI
+        </div>
+        <h1>Face Aging AI</h1>
+        <p className="subtitle">Postarzanie twarzy z wykorzystaniem GPT Image API</p>
+      </div>
 
       <div className="container">
         <div
@@ -118,7 +170,7 @@ export default function Home() {
           disabled={!file || loading}
           onClick={process}
         >
-          {loading ? 'Przetwarzanie...' : 'Postarzej twarz'}
+          <span>{loading ? 'Przetwarzanie...' : 'Postarzej twarz'}</span>
         </button>
 
         {error && <div className="error-msg">{error}</div>}
@@ -135,9 +187,18 @@ export default function Home() {
               <h3>Postarzone</h3>
               <div className="img-wrap">
                 {loading && (
-                  <div className="spinner-overlay">
-                    <div className="spinner" />
-                    <span className="spinner-text">Generowanie... moze to zajac do 60s</span>
+                  <div className="progress-overlay">
+                    <div className="progress-spinner" />
+                    <div className="progress-bar-container">
+                      <div className="progress-bar-track">
+                        <div
+                          className="progress-bar-fill"
+                          style={{ width: `${roundedProgress}%` }}
+                        />
+                      </div>
+                      <div className="progress-stage">{getStageLabel(roundedProgress)}</div>
+                      <div className="progress-percent">{roundedProgress}%</div>
+                    </div>
                   </div>
                 )}
                 {resultSrc && <img src={resultSrc} alt="Postarzone zdjecie" />}
