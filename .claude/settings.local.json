@@ -16,7 +16,9 @@
       "Bash(powershell -Command \"winget install OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements\")",
       "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
       "Bash(npx next:*)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx kill-port:*)",
+      "Bash(powershell -Command \"Get-Process -Id \\(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue\\).OwningProcess -ErrorAction SilentlyContinue | Stop-Process -Force\")"
     ]
   }
 }

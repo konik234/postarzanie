@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback, type DragEvent, type ChangeEvent } from 'react';
-import { Upload, Sparkles, Download, Loader2, Zap, Shield, ImageIcon } from 'lucide-react';
+import { Upload, Sparkles, Download, Loader2, Zap, Shield, ImageIcon, ArrowRight, Clock, MousePointerClick, Wand2 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { Slider } from '@/app/components/ui/slider';
 
@@ -115,15 +115,19 @@ export default function Home() {
 
       {/* Main */}
       <main className="flex-1 flex flex-col items-center w-full px-6">
-        <div className="w-full max-w-[640px] mx-auto pt-12 pb-12 px-6">
+        <div className="w-full max-w-[680px] mx-auto pt-20 pb-24 px-6">
 
           {/* Hero */}
-          <div className="text-center mb-8">
-            <h1 className="text-[42px] font-bold tracking-[-0.035em] leading-[1.05] text-white mb-3">
-              Face Aging
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#7c6bf5]/20 bg-[#7c6bf5]/[0.06] mb-6">
+              <Sparkles className="w-3 h-3 text-[#7c6bf5]" />
+              <span className="text-[12px] font-medium text-[#7c6bf5]/80 tracking-wide">Powered by GPT Image</span>
+            </div>
+            <h1 className="text-[48px] font-bold tracking-[-0.04em] leading-[1.05] text-white mb-4">
+              Face Aging AI
             </h1>
-            <p className="text-[15px] leading-relaxed text-white/40">
-              Symulacja starzenia twarzy oparta na AI
+            <p className="text-[16px] leading-relaxed text-white/40 max-w-[440px] mx-auto">
+              Symulacja starzenia twarzy oparta na najnowszych modelach sztucznej inteligencji
             </p>
           </div>
 
@@ -166,7 +170,7 @@ export default function Home() {
           </div>
 
           {/* Age */}
-          <div className="mb-10 p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
+          <div className="mb-10 p-5 rounded-xl border border-white/[0.06] bg-white/[0.02]">
             <div className="flex items-center justify-between mb-4">
               <label className="text-[13px] font-medium text-white/50">Wiek</label>
               <span className="text-[14px] font-semibold text-[#7c6bf5] tabular-nums">+{age} lat</span>
@@ -197,14 +201,14 @@ export default function Home() {
 
           {/* Error */}
           {error && (
-            <div className="mt-4 rounded-lg border border-red-500/15 bg-red-500/[0.05] px-4 py-3 text-[13px] text-red-400">
+            <div className="mt-5 rounded-lg border border-red-500/15 bg-red-500/[0.05] px-4 py-3 text-[13px] text-red-400">
               {error}
             </div>
           )}
 
           {/* Results */}
           {originalSrc && (
-            <div className="grid grid-cols-2 gap-3 mt-8">
+            <div className="grid grid-cols-2 gap-3 mt-10">
               <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
                 <div className="px-4 pt-4 pb-2 flex items-center justify-between">
                   <span className="text-[11px] font-medium text-white/30 uppercase tracking-wider">Oryginał</span>
@@ -249,25 +253,82 @@ export default function Home() {
             </div>
           )}
 
+          {/* Divider */}
+          <div className="my-16 flex items-center gap-4">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+          </div>
+
           {/* Features */}
-          <div className="mt-8 grid grid-cols-3 gap-px bg-white/[0.06] rounded-xl overflow-hidden">
-            {[
-              { icon: Zap, title: 'AI-Powered', desc: 'GPT Image model' },
-              { icon: Shield, title: 'Bezpieczne', desc: 'Przetwarzanie na serwerze' },
-              { icon: ImageIcon, title: 'HD', desc: 'Rozdzielczość 1024px' },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-[#09090f] flex flex-col items-center gap-2.5 pt-6 pb-5 px-4 text-center">
-                <Icon className="w-4 h-4 text-white/20" />
-                <p className="text-[13px] font-medium text-white/70">{title}</p>
-                <p className="text-[11px] text-white/25 leading-snug">{desc}</p>
-              </div>
-            ))}
+          <div className="mb-16">
+            <div className="text-center mb-10">
+              <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-white/90 mb-2">
+                Dlaczego Face Aging AI?
+              </h2>
+              <p className="text-[14px] text-white/30">
+                Zaawansowana technologia w prostym interfejsie
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { icon: Zap, title: 'AI-Powered', desc: 'Najnowszy model GPT Image od OpenAI' },
+                { icon: Shield, title: 'Bezpieczne', desc: 'Dane przetwarzane na serwerze i usuwane' },
+                { icon: ImageIcon, title: 'HD Quality', desc: 'Wyniki w rozdzielczości 1024px' },
+              ].map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="group relative flex flex-col items-center gap-4 p-6 rounded-xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1] transition-all duration-300 text-center">
+                  <div className="w-10 h-10 rounded-xl bg-[#7c6bf5]/[0.08] border border-[#7c6bf5]/[0.12] flex items-center justify-center group-hover:bg-[#7c6bf5]/[0.12] transition-colors duration-300">
+                    <Icon className="w-4.5 h-4.5 text-[#7c6bf5]/70 group-hover:text-[#7c6bf5] transition-colors duration-300" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="text-[14px] font-semibold text-white/80">{title}</p>
+                    <p className="text-[12px] text-white/30 leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* How it works */}
+          <div className="mb-16">
+            <div className="text-center mb-10">
+              <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-white/90 mb-2">
+                Jak to działa?
+              </h2>
+              <p className="text-[14px] text-white/30">
+                Trzy proste kroki do wyniku
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { icon: MousePointerClick, step: '01', title: 'Wgraj zdjęcie', desc: 'Przeciągnij lub wybierz zdjęcie twarzy' },
+                { icon: Clock, step: '02', title: 'Ustaw wiek', desc: 'Wybierz o ile lat chcesz postarzyć twarz' },
+                { icon: Wand2, step: '03', title: 'Generuj', desc: 'AI przetworzy obraz w kilkanaście sekund' },
+              ].map(({ icon: Icon, step, title, desc }) => (
+                <div key={step} className="relative flex flex-col gap-4 p-6 rounded-xl border border-white/[0.04] bg-white/[0.01]">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[11px] font-bold text-[#7c6bf5]/40 tabular-nums">{step}</span>
+                    <Icon className="w-4 h-4 text-white/20" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <p className="text-[14px] font-semibold text-white/70">{title}</p>
+                    <p className="text-[12px] text-white/25 leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Footer */}
-          <p className="text-center text-[11px] text-white/15 mt-10">
-            Powered by OpenAI
-          </p>
+          <div className="pt-8 border-t border-white/[0.04]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-5 h-5 rounded-md bg-[#7c6bf5]/10 flex items-center justify-center">
+                  <Sparkles className="w-2.5 h-2.5 text-[#7c6bf5]/50" />
+                </div>
+                <span className="text-[11px] text-white/20">Face Aging AI</span>
+              </div>
+              <span className="text-[11px] text-white/15">Powered by OpenAI</span>
+            </div>
+          </div>
         </div>
       </main>
     </div>
