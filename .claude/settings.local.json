@@ -15,7 +15,8 @@
       "Bash(powershell -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
       "Bash(powershell -Command \"winget install OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements\")",
       "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

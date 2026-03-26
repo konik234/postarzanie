@@ -132,19 +132,19 @@ export default function Home() {
       <main className="flex-1 flex flex-col items-center w-full px-6 pt-14 pb-20">
         <div className="w-full max-w-3xl">
           {/* Hero */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-12">
             <h1 className="text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-[#818cf8] via-[#a78bfa] to-[#c084fc] bg-clip-text text-transparent leading-tight pb-2">
               Face Aging
             </h1>
-            <p className="text-lg text-[#9ca3af] max-w-sm mx-auto leading-relaxed text-center">
-              Transform your appearance through time with AI-powered aging simulation
+            <p className="text-base text-[#9ca3af] mx-auto leading-relaxed text-center">
+              Przekształć swój wygląd dzięki symulacji starzenia opartej na AI
             </p>
           </div>
 
           <div className="flex flex-col gap-8">
             {/* Upload */}
-            <Card className="p-6">
-              <CardHeader className="px-0 pt-0 pb-4">
+            <Card className="p-7">
+              <CardHeader className="px-0 pt-1 pb-5">
                 <CardTitle className="flex items-center gap-2">
                   <Upload className="w-4 h-4 text-[#818cf8]" />
                   Wgraj zdjęcie
@@ -153,12 +153,12 @@ export default function Home() {
               <CardContent className="px-0 pb-0">
                 <div
                   className={`
-                    relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed min-h-48 p-16 cursor-pointer transition-all duration-300
+                    relative flex flex-col items-center justify-center gap-5 rounded-xl border-2 border-dashed min-h-52 py-14 px-8 cursor-pointer transition-all duration-300
                     ${file
                       ? 'border-[#4ade80]/40 bg-[#4ade80]/[0.03]'
                       : dragOver
                         ? 'border-[#6366f1]/50 bg-[#6366f1]/[0.04]'
-                        : 'border-[rgba(99,102,241,0.15)] hover:border-[rgba(99,102,241,0.35)] hover:bg-[rgba(99,102,241,0.03)]'
+                        : 'border-[rgba(99,102,241,0.2)] hover:border-[rgba(99,102,241,0.4)] hover:bg-[rgba(99,102,241,0.03)]'
                     }
                   `}
                   onClick={() => fileInputRef.current?.click()}
@@ -166,14 +166,14 @@ export default function Home() {
                   onDragLeave={() => setDragOver(false)}
                   onDrop={onDrop}
                 >
-                  <div className={`rounded-2xl p-5 ${file ? 'bg-[#4ade80]/10' : 'bg-[#1f1f35]'}`}>
-                    <Camera className={`w-10 h-10 ${file ? 'text-[#4ade80]' : 'text-[#6366f1]'}`} />
+                  <div className={`rounded-2xl p-5 ${file ? 'bg-[#4ade80]/10' : 'bg-[#252545]'}`}>
+                    <Camera className={`w-10 h-10 ${file ? 'text-[#4ade80]' : 'text-[#818cf8]'}`} />
                   </div>
                   <div className="text-center">
                     <p className="text-lg font-medium text-[#d1d5db]">
-                      {file ? fileName : 'Drop your image here or click to browse'}
+                      {file ? fileName : 'Przeciągnij zdjęcie tutaj lub kliknij'}
                     </p>
-                    <p className="text-sm text-[#6b7280] mt-2">JPG, PNG, WebP &bull; max 20 MB</p>
+                    <p className="text-sm text-[#6b7280] mt-2">JPG, PNG, WebP &bull; maks. 20 MB</p>
                   </div>
                 </div>
                 <input
@@ -187,17 +187,17 @@ export default function Home() {
             </Card>
 
             {/* Age Config */}
-            <Card className="p-6">
-              <CardHeader className="px-0 pt-0 pb-4">
+            <Card className="p-7">
+              <CardHeader className="px-0 pt-1 pb-5">
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[#818cf8]" />
                   Ustawienia wieku
                 </CardTitle>
               </CardHeader>
               <CardContent className="px-0 pb-0">
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-6 py-2">
                   <label className="text-base text-[#d1d5db] shrink-0 font-medium">O ile lat postarzeć?</label>
-                  <div className="flex-1 px-2">
+                  <div className="flex-1 px-3">
                     <Slider
                       min={1}
                       max={50}
@@ -205,7 +205,7 @@ export default function Home() {
                       onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
                     />
                   </div>
-                  <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[70px] text-right mr-2">
+                  <span className="text-xl font-bold bg-gradient-to-r from-[#6366f1] to-[#a855f7] bg-clip-text text-transparent tabular-nums min-w-[75px] text-right mr-1">
                     +{age} lat
                   </span>
                 </div>
@@ -233,21 +233,21 @@ export default function Home() {
 
             {/* Features */}
             <div className="grid grid-cols-3 gap-5">
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-7 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Zap className="w-6 h-6 text-[#818cf8]" />
                 </div>
                 <p className="text-base font-semibold text-[#e2e8f0]">AI-Powered</p>
                 <p className="text-sm text-[#9ca3af] leading-relaxed">Model GPT Image do realistycznych wyników</p>
               </div>
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-7 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Shield className="w-6 h-6 text-[#818cf8]" />
                 </div>
                 <p className="text-base font-semibold text-[#e2e8f0]">Bezpieczeństwo</p>
                 <p className="text-sm text-[#9ca3af] leading-relaxed">Zdjęcia przetwarzane bezpiecznie na serwerze</p>
               </div>
-              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-6 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
+              <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1e1e34] border border-[rgba(99,102,241,0.18)] py-8 px-7 text-center transition-all duration-300 hover:border-[rgba(99,102,241,0.35)] hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)]">
                 <div className="rounded-xl bg-[#6366f1]/15 p-3">
                   <Image className="w-6 h-6 text-[#818cf8]" />
                 </div>
@@ -267,7 +267,7 @@ export default function Home() {
             {originalSrc && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-2">
                 <Card className="p-6">
-                  <CardHeader className="px-0 pt-0 pb-4">
+                  <CardHeader className="px-0 pt-1 pb-5">
                     <CardTitle>Oryginał</CardTitle>
                   </CardHeader>
                   <CardContent className="px-0 pb-0">
@@ -280,7 +280,7 @@ export default function Home() {
                 </Card>
 
                 <Card className="p-6">
-                  <CardHeader className="flex flex-row items-center justify-between px-0 pt-0 pb-4">
+                  <CardHeader className="flex flex-row items-center justify-between px-0 pt-1 pb-5">
                     <CardTitle>Wynik</CardTitle>
                     {resultSrc && (
                       <a
