@@ -115,10 +115,10 @@ export default function Home() {
 
       {/* Main */}
       <main className="flex-1 flex flex-col items-center w-full px-6">
-        <div className="w-full max-w-[540px] pt-20 pb-16">
+        <div className="w-full max-w-[640px] mx-auto pt-12 pb-12 px-6">
 
           {/* Hero */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-8">
             <h1 className="text-[42px] font-bold tracking-[-0.035em] leading-[1.05] text-white mb-3">
               Face Aging
             </h1>
@@ -166,12 +166,12 @@ export default function Home() {
           </div>
 
           {/* Age */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-4 pl-0.5 pr-0.5">
+          <div className="mb-10 p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
+            <div className="flex items-center justify-between mb-4">
               <label className="text-[13px] font-medium text-white/50">Wiek</label>
               <span className="text-[14px] font-semibold text-[#7c6bf5] tabular-nums">+{age} lat</span>
             </div>
-            <div className="px-0.5">
+            <div>
               <Slider
                 min={1}
                 max={50}
@@ -179,7 +179,7 @@ export default function Home() {
                 onChange={(e) => setAge(Number((e.target as HTMLInputElement).value))}
               />
             </div>
-            <div className="flex justify-between text-[11px] text-white/20 mt-2.5 px-0.5">
+            <div className="flex justify-between text-[11px] text-white/20 mt-2.5">
               <span>1</span>
               <span>25</span>
               <span>50</span>
@@ -249,17 +249,14 @@ export default function Home() {
             </div>
           )}
 
-          {/* Divider */}
-          <div className="my-12 h-px bg-white/[0.06]" />
-
           {/* Features */}
-          <div className="grid grid-cols-3 gap-px bg-white/[0.06] rounded-xl overflow-hidden">
+          <div className="mt-8 grid grid-cols-3 gap-px bg-white/[0.06] rounded-xl overflow-hidden">
             {[
               { icon: Zap, title: 'AI-Powered', desc: 'GPT Image model' },
               { icon: Shield, title: 'Bezpieczne', desc: 'Przetwarzanie na serwerze' },
               { icon: ImageIcon, title: 'HD', desc: 'Rozdzielczość 1024px' },
             ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-[#09090f] flex flex-col items-center gap-2.5 py-6 px-4 text-center">
+              <div key={title} className="bg-[#09090f] flex flex-col items-center gap-2.5 pt-6 pb-5 px-4 text-center">
                 <Icon className="w-4 h-4 text-white/20" />
                 <p className="text-[13px] font-medium text-white/70">{title}</p>
                 <p className="text-[11px] text-white/25 leading-snug">{desc}</p>
