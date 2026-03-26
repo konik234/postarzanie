@@ -2,15 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  --color-border: rgba(99, 102, 241, 0.15);
-  --color-border-hover: rgba(99, 102, 241, 0.3);
-  --color-surface: #1a1a2e;
-  --color-surface-hover: #1f1f35;
-  --color-accent: #818cf8;
-  --color-accent-hover: #6366f1;
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.05);
+  --color-accent: #7c6bf5;
+  --color-accent-hover: #6d5ce0;
   --color-accent-foreground: #ffffff;
-  --color-muted: #6b7280;
-  --color-success: #4ade80;
+  --color-muted: rgba(255, 255, 255, 0.4);
+  --color-subtle: rgba(255, 255, 255, 0.55);
+  --color-success: #34d399;
   --color-error: #f87171;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -23,39 +24,21 @@
 
 body {
   font-family: var(--font-sans);
-  background: #0f0f1a;
-  color: #e2e8f0;
+  background: #09090f;
+  color: rgba(255, 255, 255, 0.85);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  position: relative;
-  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Background orbs */
-body::before,
-body::after {
+/* Subtle noise texture */
+body::before {
   content: '';
   position: fixed;
-  border-radius: 50%;
-  filter: blur(130px);
+  inset: 0;
   z-index: 0;
   pointer-events: none;
-}
-
-body::before {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%);
-  top: -200px;
-  right: -100px;
-}
-
-body::after {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.1), transparent 70%);
-  bottom: -100px;
-  left: -150px;
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 100, 255, 0.08), transparent);
 }
 
 @keyframes spin {
@@ -67,7 +50,13 @@ body::after {
   100% { transform: translateX(100%); }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
